@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>本地工具箱</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>工具箱</h1>
+            <p class="subtitle">本地工具集合</p>
+        </header>
+
+        <nav class="tabs">
+            <button class="tab-btn active" data-tab="color">色值转换</button>
+            <button class="tab-btn" data-tab="timestamp">时间戳转换</button>
+            <button class="tab-btn" data-tab="units">单位转换</button>
+            <button class="tab-btn" data-tab="json">JSON 格式化</button>
+            <button class="tab-btn" data-tab="base64">Base64 编码</button>
+            <button class="tab-btn" data-tab="uuid">UUID 生成</button>
+            <button class="tab-btn" data-tab="wordcount">字数统计</button>
+            <button class="tab-btn" data-tab="url">URL 编码</button>
+        </nav>
+
+        <main class="content">
+            <!-- 色值转换 -->
+            <section id="color" class="tab-content active">
+                <h2>色值转换</h2>
+                <div class="tool-section">
+                    <div class="input-group">
+                        <label>HEX 值</label>
+                        <input type="text" id="colorHex" placeholder="#000000" class="input-field">
+                        <div id="hexError" class="error-message"></div>
+                    </div>
+                    <div class="input-group">
+                        <label>RGB 值</label>
+                        <input type="text" id="colorRgb" placeholder="rgb(0, 0, 0)" class="input-field">
+                        <div id="rgbError" class="error-message"></div>
+                    </div>
+                    <div class="input-group">
+                        <label>HSL 值</label>
+                        <input type="text" id="colorHsl" placeholder="hsl(0, 0%, 0%)" class="input-field">
+                        <div id="hslError" class="error-message"></div>
+                    </div>
+                    <div class="color-preview" id="colorPreview"></div>
+
+                    <!-- 取色盘 -->
+                    <div class="color-picker-container">
+                        <label>取色盘（按住并拖动选择）</label>
+                        <div class="color-picker-wrapper">
+                            <div class="color-gradient" id="colorGradient"></div>
+                            <div class="color-cursor" id="colorCursor"></div>
+                        </div>
+                        <div class="color-hue-slider-wrapper">
+                            <input type="range" id="hueSlider" class="color-hue-slider" min="0" max="360" value="0">
+                        </div>
+                    </div>
+
+                    <button class="copy-btn" data-target="colorHex">复制 HEX</button>
+                    <button class="copy-btn" data-target="colorRgb">复制 RGB</button>
+                    <button class="copy-btn" data-target="colorHsl">复制 HSL</button>
+                </div>
+            </section>
+
+            <!-- 时间戳转换 -->
+            <section id="timestamp" class="tab-content">
+                <h2>时间戳转换</h2>
+                <div class="tool-section">
+                    <div class="input-group">
+                        <label>时间戳（秒）</label>
+                        <input type="text" id="timestampSecond" placeholder="1699430400" class="input-field">
+                    </div>
+                    <div class="input-group">
+                        <label>时间戳（毫秒）</label>
+                        <input type="text" id="timestampMs" placeholder="1699430400000" class="input-field">
+                    </div>
+                    <div class="input-group">
+                        <label>日期时间</label>
+                        <input type="datetime-local" id="datetimeInput" class="input-field">
+                    </div>
+                    <button class="copy-btn" data-target="timestampSecond">复制秒级时间戳</button>
+                    <button class="copy-btn" data-target="timestampMs">复制毫秒级时间戳</button>
+                    <button class="action-btn" id="nowBtn">获取当前时间戳</button>
+                </div>
+            </section>
+
+            <!-- 单位转换 -->
+            <section id="units" class="tab-content">
+                <h2>单位转换</h2>
+                <div class="tool-section">
+                    <div class="unit-category">
+                        <h3>存储单位</h3>
+                        <div class="input-group">
+                            <label>输入数值</label>
+                            <input type="number" id="storageValue" placeholder="0" class="input-field">
+                        </div>
+                        <div class="input-group">
+                            <label>从</label>
+                            <select id="storageFrom" class="input-field">
+                                <option value="B">字节 (B)</option>
+                                <option value="KB">千字节 (KB)</option>
+                                <option value="MB">兆字节 (MB)</option>
+                                <option value="GB">吉字节 (GB)</option>
+                                <option value="TB">太字节 (TB)</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label>转换到</label>
+                            <select id="storageTo" class="input-field">
+                                <option value="B">字节 (B)</option>
+                                <option value="KB">千字节 (KB)</option>
+                                <option value="MB">兆字节 (MB)</option>
+                                <option value="GB">吉字节 (GB)</option>
+                                <option value="TB">太字节 (TB)</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label>结果</label>
+                            <input type="text" id="storageResult" readonly class="input-field result-field">
+                        </div>
+                        <button class="copy-btn" data-target="storageResult">复制结果</button>
+                    </div>
+
+                    <div class="unit-category">
+                        <h3>长度单位</h3>
+                        <div class="input-group">
+                            <label>输入数值</label>
+                            <input type="number" id="lengthValue" placeholder="0" class="input-field">
+                        </div>
+                        <div class="input-group">
+                            <label>从</label>
+                            <select id="lengthFrom" class="input-field">
+                                <option value="m">米 (m)</option>
+                                <option value="km">千米 (km)</option>
+                                <option value="cm">厘米 (cm)</option>
+                                <option value="mm">毫米 (mm)</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label>转换到</label>
+                            <select id="lengthTo" class="input-field">
+                                <option value="m">米 (m)</option>
+                                <option value="km">千米 (km)</option>
+                                <option value="cm">厘米 (cm)</option>
+                                <option value="mm">毫米 (mm)</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label>结果</label>
+                            <input type="text" id="lengthResult" readonly class="input-field result-field">
+                        </div>
+                        <button class="copy-btn" data-target="lengthResult">复制结果</button>
+                    </div>
+
+                    <div class="unit-category">
+                        <h3>重量单位</h3>
+                        <div class="input-group">
+                            <label>输入数值</label>
+                            <input type="number" id="weightValue" placeholder="0" class="input-field">
+                        </div>
+                        <div class="input-group">
+                            <label>从</label>
+                            <select id="weightFrom" class="input-field">
+                                <option value="kg">千克 (kg)</option>
+                                <option value="g">克 (g)</option>
+                                <option value="mg">毫克 (mg)</option>
+                                <option value="t">吨 (t)</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label>转换到</label>
+                            <select id="weightTo" class="input-field">
+                                <option value="kg">千克 (kg)</option>
+                                <option value="g">克 (g)</option>
+                                <option value="mg">毫克 (mg)</option>
+                                <option value="t">吨 (t)</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label>结果</label>
+                            <input type="text" id="weightResult" readonly class="input-field result-field">
+                        </div>
+                        <button class="copy-btn" data-target="weightResult">复制结果</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- JSON 格式化 -->
+            <section id="json" class="tab-content">
+                <h2>JSON 格式化</h2>
+                <div class="tool-section">
+                    <div class="input-group">
+                        <label>输入 JSON</label>
+                        <textarea id="jsonInput" placeholder='{"key": "value"}' class="input-field textarea-field"></textarea>
+                    </div>
+                    <div class="button-row">
+                        <button class="action-btn" id="jsonFormatBtn">美化</button>
+                        <button class="action-btn" id="jsonCompressBtn">压缩</button>
+                        <button class="action-btn" id="jsonValidateBtn">验证</button>
+                    </div>
+                    <div class="input-group">
+                        <label>输出 JSON</label>
+                        <textarea id="jsonOutput" readonly class="input-field textarea-field result-field"></textarea>
+                    </div>
+                    <div id="jsonStatus" class="status-message"></div>
+                    <button class="copy-btn" data-target="jsonOutput">复制结果</button>
+                </div>
+            </section>
+
+            <!-- Base64 编码/解码 -->
+            <section id="base64" class="tab-content">
+                <h2>Base64 编码/解码</h2>
+                <div class="tool-section">
+                    <div class="input-group">
+                        <label>输入文本</label>
+                        <textarea id="base64Input" placeholder="输入文本或 Base64 编码" class="input-field textarea-field"></textarea>
+                    </div>
+                    <div class="button-row">
+                        <button class="action-btn" id="base64EncodeBtn">编码</button>
+                        <button class="action-btn" id="base64DecodeBtn">解码</button>
+                    </div>
+                    <div class="input-group">
+                        <label>输出</label>
+                        <textarea id="base64Output" readonly class="input-field textarea-field result-field"></textarea>
+                    </div>
+                    <div id="base64Status" class="status-message"></div>
+                    <button class="copy-btn" data-target="base64Output">复制结果</button>
+                </div>
+            </section>
+
+            <!-- UUID 生成器 -->
+            <section id="uuid" class="tab-content">
+                <h2>UUID 生成器</h2>
+                <div class="tool-section">
+                    <div class="input-group">
+                        <label>生成数量</label>
+                        <div class="input-row">
+                            <input type="number" id="uuidCount" value="1" min="1" max="100" class="input-field count-input">
+                            <button class="action-btn" id="generateUuidBtn">生成</button>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label>生成的 UUID</label>
+                        <textarea id="uuidOutput" readonly class="input-field textarea-field result-field"></textarea>
+                    </div>
+                    <button class="copy-btn" data-target="uuidOutput">复制所有</button>
+                </div>
+            </section>
+
+            <!-- 字数统计 -->
+            <section id="wordcount" class="tab-content">
+                <h2>字数统计</h2>
+                <div class="tool-section">
+                    <div class="input-group">
+                        <label>输入文本</label>
+                        <textarea id="wordcountInput" placeholder="输入要统计的文本" class="input-field textarea-field"></textarea>
+                    </div>
+                    <div id="wordcountStats" class="stats-container">
+                        <div class="stat-item">
+                            <span class="stat-label">字符数</span>
+                            <span class="stat-value" id="charCount">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">字数（不含空格）</span>
+                            <span class="stat-value" id="charCountNoSpace">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">单词数</span>
+                            <span class="stat-value" id="wordCount">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">行数</span>
+                            <span class="stat-value" id="lineCount">0</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- URL 编码/解码 -->
+            <section id="url" class="tab-content">
+                <h2>URL 编码/解码</h2>
+                <div class="tool-section">
+                    <div class="input-group">
+                        <label>输入</label>
+                        <textarea id="urlInput" placeholder="输入 URL 或文本" class="input-field textarea-field"></textarea>
+                    </div>
+                    <div class="button-row">
+                        <button class="action-btn" id="urlEncodeBtn">编码</button>
+                        <button class="action-btn" id="urlDecodeBtn">解码</button>
+                    </div>
+                    <div class="input-group">
+                        <label>输出</label>
+                        <textarea id="urlOutput" readonly class="input-field textarea-field result-field"></textarea>
+                    </div>
+                    <div id="urlStatus" class="status-message"></div>
+                    <button class="copy-btn" data-target="urlOutput">复制结果</button>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="js/converters/color.js"></script>
+    <script src="js/converters/timestamp.js"></script>
+    <script src="js/converters/units.js"></script>
+    <script src="js/converters/json.js"></script>
+    <script src="js/converters/base64.js"></script>
+    <script src="js/converters/uuid.js"></script>
+    <script src="js/converters/wordcount.js"></script>
+    <script src="js/converters/url.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
