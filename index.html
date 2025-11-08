@@ -7,6 +7,16 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+    <!-- 主题切换按钮 -->
+    <div class="theme-switcher">
+        <button class="theme-toggle-btn" id="themeToggle" title="切换主题">🌙</button>
+        <div class="theme-menu" id="themeMenu">
+            <button class="theme-option" data-theme="light">☀️ 亮色</button>
+            <button class="theme-option" data-theme="dark">🌙 暗色</button>
+            <button class="theme-option" data-theme="auto">🔄 自动</button>
+        </div>
+    </div>
+
     <div class="container">
         <header class="header">
             <h1>工具箱</h1>
@@ -309,6 +319,7 @@
     <script src="js/converters/uuid.js"></script>
     <script src="js/converters/wordcount.js"></script>
     <script src="js/converters/url.js"></script>
+    <script src="js/theme.js"></script>
     <script src="js/app.js"></script>
 </body>
 </html>

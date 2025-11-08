@@ -5,19 +5,41 @@
 }
 
 :root {
+    /* 亮色模式 */
     --primary-color: #333;
     --border-color: #ddd;
     --bg-color: #f9f9f9;
     --text-color: #333;
     --btn-hover: #f0f0f0;
     --success-color: #4CAF50;
+    --body-bg: #fff;
+    --subtitle-color: #666;
+    --input-bg: #f0f0f0;
+    --input-text: #999;
+    --error-bg: #fff5f5;
+}
+
+/* 暗黑模式 */
+[data-theme="dark"] {
+    --primary-color: #e0e0e0;
+    --border-color: #444;
+    --bg-color: #2a2a2a;
+    --text-color: #e0e0e0;
+    --btn-hover: #3a3a3a;
+    --success-color: #66bb6a;
+    --body-bg: #1e1e1e;
+    --subtitle-color: #999;
+    --input-bg: #333;
+    --input-text: #666;
+    --error-bg: #3a2a2a;
 }
 
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    background-color: #fff;
+    background-color: var(--body-bg);
     color: var(--text-color);
     line-height: 1.6;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .container {
@@ -42,7 +64,8 @@ body {
 
 .subtitle {
     font-size: 14px;
-    color: #666;
+    color: var(--subtitle-color);
+    transition: color 0.3s ease;
 }
 
 /* Tabs Navigation */
@@ -142,13 +165,13 @@ body {
 
 .input-field:disabled,
 .result-field {
-    background-color: #f0f0f0;
-    color: #999;
+    background-color: var(--input-bg);
+    color: var(--input-text);
 }
 
 .input-field.error {
     border-color: #dc3545;
-    background-color: #fff5f5;
+    background-color: var(--error-bg);
 }
 
 .error-message {
@@ -487,5 +510,97 @@ body {
 
     .stat-value {
         font-size: 20px;
+    }
+}
+
+/* 主题切换按钮 */
+.theme-switcher {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.theme-toggle-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid var(--border-color);
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    transition: all 0.3s ease;
+}
+
+.theme-toggle-btn:hover {
+    background-color: var(--btn-hover);
+    transform: scale(1.1);
+}
+
+.theme-menu {
+    position: absolute;
+    top: 50px;
+    right: 0;
+    background-color: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    min-width: 140px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    display: none;
+    flex-direction: column;
+}
+
+.theme-menu.show {
+    display: flex;
+}
+
+.theme-option {
+    padding: 10px 15px;
+    cursor: pointer;
+    border: none;
+    background: none;
+    color: var(--text-color);
+    text-align: left;
+    font-size: 14px;
+    transition: background-color 0.2s ease;
+    width: 100%;
+}
+
+.theme-option:hover {
+    background-color: var(--btn-hover);
+}
+
+.theme-option.active {
+    background-color: var(--success-color);
+    color: #fff;
+    font-weight: 600;
+}
+
+.theme-option:first-child {
+    border-radius: 6px 6px 0 0;
+}
+
+.theme-option:last-child {
+    border-radius: 0 0 6px 6px;
+}
+
+@media (max-width: 600px) {
+    .theme-switcher {
+        top: 10px;
+        right: 10px;
+    }
+
+    .theme-toggle-btn {
+        width: 36px;
+        height: 36px;
+        font-size: 18px;
+    }
+
+    .theme-menu {
+        top: 45px;
     }
 }
