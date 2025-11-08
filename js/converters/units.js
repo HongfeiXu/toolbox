@@ -10,22 +10,6 @@ const UnitConverter = {
         TB: 1024 * 1024 * 1024 * 1024
     },
 
-    // 长度单位转换（全转为米）
-    length: {
-        m: 1,
-        km: 1000,
-        cm: 0.01,
-        mm: 0.001
-    },
-
-    // 重量单位转换（全转为克）
-    weight: {
-        g: 1,
-        kg: 1000,
-        mg: 0.001,
-        t: 1000000
-    },
-
     // 通用转换函数
     convert(value, fromUnit, toUnit, unitMap) {
         if (!value || isNaN(value)) return '';
@@ -45,16 +29,6 @@ const UnitConverter = {
     // 存储单位转换
     convertStorage(value, from, to) {
         return this.convert(value, from, to, this.storage);
-    },
-
-    // 长度单位转换
-    convertLength(value, from, to) {
-        return this.convert(value, from, to, this.length);
-    },
-
-    // 重量单位转换
-    convertWeight(value, from, to) {
-        return this.convert(value, from, to, this.weight);
     }
 };
 
@@ -81,48 +55,4 @@ document.addEventListener('DOMContentLoaded', () => {
     storageValue.addEventListener('input', updateStorage);
     storageFrom.addEventListener('change', updateStorage);
     storageTo.addEventListener('change', updateStorage);
-
-    // 长度单位转换
-    const lengthValue = document.getElementById('lengthValue');
-    const lengthFrom = document.getElementById('lengthFrom');
-    const lengthTo = document.getElementById('lengthTo');
-    const lengthResult = document.getElementById('lengthResult');
-
-    const updateLength = () => {
-        if (lengthValue.value) {
-            lengthResult.value = UnitConverter.convertLength(
-                lengthValue.value,
-                lengthFrom.value,
-                lengthTo.value
-            );
-        } else {
-            lengthResult.value = '';
-        }
-    };
-
-    lengthValue.addEventListener('input', updateLength);
-    lengthFrom.addEventListener('change', updateLength);
-    lengthTo.addEventListener('change', updateLength);
-
-    // 重量单位转换
-    const weightValue = document.getElementById('weightValue');
-    const weightFrom = document.getElementById('weightFrom');
-    const weightTo = document.getElementById('weightTo');
-    const weightResult = document.getElementById('weightResult');
-
-    const updateWeight = () => {
-        if (weightValue.value) {
-            weightResult.value = UnitConverter.convertWeight(
-                weightValue.value,
-                weightFrom.value,
-                weightTo.value
-            );
-        } else {
-            weightResult.value = '';
-        }
-    };
-
-    weightValue.addEventListener('input', updateWeight);
-    weightFrom.addEventListener('change', updateWeight);
-    weightTo.addEventListener('change', updateWeight);
 });

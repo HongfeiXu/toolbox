@@ -113,18 +113,6 @@ const UnitConverter = {
         GB: 1024 * 1024 * 1024,
         TB: 1024 * 1024 * 1024 * 1024
     },
-    length: {
-        m: 1,
-        km: 1000,
-        cm: 0.01,
-        mm: 0.001
-    },
-    weight: {
-        g: 1,
-        kg: 1000,
-        mg: 0.001,
-        t: 1000000
-    },
     convert(value, fromUnit, toUnit, unitMap) {
         if (!value || isNaN(value)) return '';
         const numValue = parseFloat(value);
@@ -138,12 +126,6 @@ const UnitConverter = {
     },
     convertStorage(value, from, to) {
         return this.convert(value, from, to, this.storage);
-    },
-    convertLength(value, from, to) {
-        return this.convert(value, from, to, this.length);
-    },
-    convertWeight(value, from, to) {
-        return this.convert(value, from, to, this.weight);
     }
 };
 
@@ -393,16 +375,6 @@ unitTests.test('存储单位: 1024 B 转 KB', () => {
 unitTests.test('存储单位: 1 GB 转 MB', () => {
     const result = UnitConverter.convertStorage(1, 'GB', 'MB');
     assertEqual(result, '1024', '1 GB 应该等于 1024 MB');
-});
-
-unitTests.test('长度单位: 1000 m 转 km', () => {
-    const result = UnitConverter.convertLength(1000, 'm', 'km');
-    assertEqual(result, '1', '1000 m 应该等于 1 km');
-});
-
-unitTests.test('重量单位: 1000 g 转 kg', () => {
-    const result = UnitConverter.convertWeight(1000, 'g', 'kg');
-    assertEqual(result, '1', '1000 g 应该等于 1 kg');
 });
 
 // 4. JSON 格式化测试
