@@ -67,53 +67,65 @@ document.addEventListener('DOMContentLoaded', () => {
     const datetimeInput = document.getElementById('datetimeInput');
     const nowBtn = document.getElementById('nowBtn');
 
-    // 统一的转换处理函数
-    const updateTimestamp = () => {
+    // 秒级时间戳变化时的处理
+    const updateFromSeconds = () => {
         const secondStr = secondInput.value.trim();
-        const msStr = msInput.value.trim();
-        const datetimeStr = datetimeInput.value.trim();
+        if (!secondStr) {
+            msInput.value = '';
+            datetimeInput.value = '';
+            return;
+        }
 
-        try {
-            if (secondStr && TimestampConverter.isValidSeconds(secondStr)) {
-                // 秒级时间戳输入有效
-                const date = TimestampConverter.secondsToDate(parseInt(secondStr));
-                msInput.value = TimestampConverter.dateToMs(date);
-                datetimeInput.value = TimestampConverter.dateToDatetimeLocal(date);
-            } else if (msStr && TimestampConverter.isValidMs(msStr)) {
-                // 毫秒级时间戳输入有效
-                const date = TimestampConverter.msToDate(msStr);
-                secondInput.value = TimestampConverter.dateToSeconds(date);
-                datetimeInput.value = TimestampConverter.dateToDatetimeLocal(date);
-            } else if (datetimeStr) {
-                // 日期时间输入有效
-                const date = TimestampConverter.datetimeLocalToDate(datetimeStr);
-                if (!isNaN(date.getTime())) {
-                    secondInput.value = TimestampConverter.dateToSeconds(date);
-                    msInput.value = TimestampConverter.dateToMs(date);
-                } else {
-                    secondInput.value = '';
-                    msInput.value = '';
-                }
-            }
-        } catch (error) {
-            // 输入格式不正确，清除其他字段
-            if (document.activeElement === secondInput && !TimestampConverter.isValidSeconds(secondStr)) {
-                msInput.value = '';
-                datetimeInput.value = '';
-            } else if (document.activeElement === msInput && !TimestampConverter.isValidMs(msStr)) {
-                secondInput.value = '';
-                datetimeInput.value = '';
-            } else if (document.activeElement === datetimeInput && !datetimeStr) {
-                secondInput.value = '';
-                msInput.value = '';
-            }
+        if (TimestampConverter.isValidSeconds(secondStr)) {
+            const date = TimestampConverter.secondsToDate(parseInt(secondStr));
+            msInput.value = TimestampConverter.dateToMs(date);
+            datetimeInput.value = TimestampConverter.dateToDatetimeLocal(date);
         }
     };
 
-    // 监听输入变化
-    secondInput.addEventListener('input', updateTimestamp);
-    msInput.addEventListener('input', updateTimestamp);
-    datetimeInput.addEventListener('change', updateTimestamp);
+    // 毫秒级时间戳变化时的处理
+    const updateFromMs = () => {
+        const msStr = msInput.value.trim();
+        if (!msStr) {
+            secondInput.value = '';
+            datetimeInput.value = '';
+            return;
+        }
+
+        if (TimestampConverter.isValidMs(msStr)) {
+            const date = TimestampConverter.msToDate(msStr);
+            secondInput.value = TimestampConverter.dateToSeconds(date);
+            datetimeInput.value = TimestampConverter.dateToDatetimeLocal(date);
+        }
+    };
+
+    // 日期时间变化时的处理
+    const updateFromDatetime = () => {
+        const datetimeStr = datetimeInput.value.trim();
+        if (!datetimeStr) {
+            secondInput.value = '';
+            msInput.value = '';
+            return;
+        }
+
+        const date = TimestampConverter.datetimeLocalToDate(datetimeStr);
+        if (!isNaN(date.getTime())) {
+            secondInput.value = TimestampConverter.dateToSeconds(date);
+            msInput.value = TimestampConverter.dateToMs(date);
+        } else {
+            secondInput.value = '';
+            msInput.value = '';
+        }
+    };
+
+    // 监听输入变化 - 每个字段独立处理
+    secondInput.addEventListener('input', updateFromSeconds);
+    msInput.addEventListener('input', updateFromMs);
+    // datetime-local 需要同时监听 input 和 change 事件
+    // input: 实时捕捉用户输入
+    // change: 捕捉日期选择器的选择
+    datetimeInput.addEventListener('input', updateFromDatetime);
+    datetimeInput.addEventListener('change', updateFromDatetime);
 
     // "获取当前时间戳" 按钮点击事件
     nowBtn.addEventListener('click', () => {
