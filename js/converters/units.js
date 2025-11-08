@@ -29,6 +29,50 @@ const UnitConverter = {
     // 存储单位转换
     convertStorage(value, from, to) {
         return this.convert(value, from, to, this.storage);
+    },
+
+    // 转换为人类可读格式
+    formatHumanReadable(value, fromUnit) {
+        if (!value || isNaN(value)) return '';
+
+        // 首先转换为字节
+        const bytes = parseFloat(value) * this.storage[fromUnit];
+
+        // 定义单位数组（从小到大）
+        const units = ['B', 'KB', 'MB', 'GB', 'TB'];
+        const unitValues = [1, 1024, 1024 * 1024, 1024 * 1024 * 1024, 1024 * 1024 * 1024 * 1024];
+
+        // 找到最合适的单位（让数值在 1-1024 之间）
+        let selectedUnit = 'B';
+        let selectedValue = bytes;
+
+        for (let i = units.length - 1; i >= 0; i--) {
+            if (bytes >= unitValues[i]) {
+                selectedUnit = units[i];
+                selectedValue = bytes / unitValues[i];
+                break;
+            }
+        }
+
+        // 格式化数值
+        let formattedValue;
+        if (selectedValue === 0) {
+            formattedValue = '0';
+        } else if (selectedValue >= 100) {
+            // 大于等于 100，不显示小数
+            formattedValue = Math.round(selectedValue).toString();
+        } else if (selectedValue >= 10) {
+            // 10-100 之间，保留 1 位小数
+            formattedValue = selectedValue.toFixed(1);
+        } else {
+            // 小于 10，保留 2 位小数
+            formattedValue = selectedValue.toFixed(2);
+        }
+
+        // 移除末尾的 .0
+        formattedValue = formattedValue.replace(/\.0+$/, '');
+
+        return `${formattedValue} ${selectedUnit}`;
     }
 };
 
@@ -39,16 +83,24 @@ document.addEventListener('DOMContentLoaded', () => {
     const storageFrom = document.getElementById('storageFrom');
     const storageTo = document.getElementById('storageTo');
     const storageResult = document.getElementById('storageResult');
+    const storageHumanReadable = document.getElementById('storageHumanReadable');
 
     const updateStorage = () => {
         if (storageValue.value) {
+            // 常规转换结果
             storageResult.value = UnitConverter.convertStorage(
                 storageValue.value,
                 storageFrom.value,
                 storageTo.value
             );
+            // 人类可读格式
+            storageHumanReadable.value = UnitConverter.formatHumanReadable(
+                storageValue.value,
+                storageFrom.value
+            );
         } else {
             storageResult.value = '';
+            storageHumanReadable.value = '';
         }
     };
 

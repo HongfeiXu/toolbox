@@ -4,20 +4,40 @@ document.addEventListener('DOMContentLoaded', () => {
     // === Tab 切换逻辑 ===
     const tabBtns = document.querySelectorAll('.tab-btn');
     const tabContents = document.querySelectorAll('.tab-content');
+    const TAB_STORAGE_KEY = 'active-tab';
 
+    // 切换到指定的 tab
+    const switchTab = (tabName) => {
+        // 移除所有活跃状态
+        tabBtns.forEach(b => b.classList.remove('active'));
+        tabContents.forEach(c => c.classList.remove('active'));
+
+        // 添加活跃状态到对应的按钮和内容
+        const targetBtn = document.querySelector(`[data-tab="${tabName}"]`);
+        const targetContent = document.getElementById(tabName);
+
+        if (targetBtn && targetContent) {
+            targetBtn.classList.add('active');
+            targetContent.classList.add('active');
+            // 保存到 localStorage
+            localStorage.setItem(TAB_STORAGE_KEY, tabName);
+        }
+    };
+
+    // 监听 tab 按钮点击
     tabBtns.forEach(btn => {
         btn.addEventListener('click', () => {
             const tabName = btn.getAttribute('data-tab');
-
-            // 移除所有活跃状态
-            tabBtns.forEach(b => b.classList.remove('active'));
-            tabContents.forEach(c => c.classList.remove('active'));
-
-            // 添加活跃状态到点击的按钮和对应的内容
-            btn.classList.add('active');
-            document.getElementById(tabName).classList.add('active');
+            switchTab(tabName);
         });
     });
+
+    // 页面加载时恢复上次激活的 tab
+    const savedTab = localStorage.getItem(TAB_STORAGE_KEY);
+    if (savedTab) {
+        switchTab(savedTab);
+    }
+    // 如果没有保存的 tab，默认已经在 HTML 中设置了第一个 tab 为 active
 
     // === 复制功能 ===
     const copyBtns = document.querySelectorAll('.copy-btn');
