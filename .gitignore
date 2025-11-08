@@ -1,0 +1,21 @@
+# 调试文件夹
+debug/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Node
+node_modules/
+package-lock.json
+
+# 其他
+.env
+.env.local
