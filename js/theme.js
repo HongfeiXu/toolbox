@@ -67,11 +67,12 @@ const ThemeManager = {
         // 应用主题
         if (activeTheme === this.DARK) {
             document.documentElement.setAttribute('data-theme', this.DARK);
-            this.updateToggleButton('☀️');
         } else {
             document.documentElement.removeAttribute('data-theme');
-            this.updateToggleButton('🌙');
         }
+
+        // 更新按钮：显示当前所在的主题模式
+        this.updateToggleButton(activeTheme);
 
         // 更新菜单中的 active 状态
         this.updateMenuState(preference);
@@ -100,10 +101,17 @@ const ThemeManager = {
         });
     },
 
-    // 更新切换按钮的图标
-    updateToggleButton(icon) {
+    // 更新切换按钮的图标（显示当前主题）
+    updateToggleButton(theme) {
         const themeToggle = document.getElementById('themeToggle');
-        themeToggle.textContent = icon;
+        // 根据当前主题显示对应的图标
+        if (theme === this.DARK) {
+            themeToggle.textContent = '🌙';  // 当前是暗色模式
+            themeToggle.title = '当前: 暗色模式';
+        } else {
+            themeToggle.textContent = '☀️';  // 当前是亮色模式
+            themeToggle.title = '当前: 亮色模式';
+        }
     },
 
     // 更新菜单中的 active 状态
