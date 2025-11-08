@@ -15,8 +15,19 @@
     --body-bg: #fff;
     --subtitle-color: #666;
     --input-bg: #f0f0f0;
+    --input-bg-editable: #fff;
+    --input-bg-disabled: #f0f0f0;
     --input-text: #999;
+    --input-text-editable: #333;
     --error-bg: #fff5f5;
+    /* 按钮色系 */
+    --btn-bg: #fff;
+    --btn-text: #333;
+    --btn-hover-bg: #f0f0f0;
+    --btn-active-bg: #e0e0e0;
+    --btn-success-bg: #4CAF50;
+    --btn-success-hover: #45a049;
+    --btn-success-text: #fff;
 }
 
 /* 暗黑模式 */
@@ -30,8 +41,19 @@
     --body-bg: #1e1e1e;
     --subtitle-color: #999;
     --input-bg: #333;
+    --input-bg-editable: #2a2a2a;
+    --input-bg-disabled: #1a1a1a;
     --input-text: #666;
+    --input-text-editable: #e0e0e0;
     --error-bg: #3a2a2a;
+    /* 按钮色系 */
+    --btn-bg: #333;
+    --btn-text: #e0e0e0;
+    --btn-hover-bg: #3f3f3f;
+    --btn-active-bg: #444;
+    --btn-success-bg: #4a9d4a;
+    --btn-success-hover: #5eb85e;
+    --btn-success-text: #fff;
 }
 
 body {
@@ -146,7 +168,8 @@ body {
 .input-group label {
     font-size: 13px;
     font-weight: 500;
-    color: #666;
+    color: var(--input-text);
+    transition: color 0.3s ease;
 }
 
 .input-field {
@@ -155,7 +178,9 @@ body {
     border-radius: 4px;
     font-size: 14px;
     font-family: 'Monaco', 'Courier New', monospace;
-    transition: border-color 0.2s;
+    background-color: var(--input-bg-editable);
+    color: var(--input-text-editable);
+    transition: border-color 0.2s, background-color 0.3s, color 0.3s;
 }
 
 .input-field:focus {
@@ -165,8 +190,9 @@ body {
 
 .input-field:disabled,
 .result-field {
-    background-color: var(--input-bg);
+    background-color: var(--input-bg-disabled);
     color: var(--input-text);
+    cursor: not-allowed;
 }
 
 .input-field.error {
@@ -188,25 +214,28 @@ body {
     height: 80px;
     border: 1px solid var(--border-color);
     border-radius: 4px;
-    background-color: #fff;
+    background-color: #000;
     margin-top: 10px;
+    transition: background-color 0.3s ease;
 }
 
 /* Color Picker */
 .color-picker-container {
     margin-top: 15px;
     padding: 15px;
-    background-color: #fff;
+    background-color: var(--input-bg-editable);
     border: 1px solid var(--border-color);
     border-radius: 4px;
+    transition: background-color 0.3s ease;
 }
 
 .color-picker-container label {
     display: block;
     font-size: 13px;
     font-weight: 500;
-    color: #666;
+    color: var(--input-text);
     margin-bottom: 10px;
+    transition: color 0.3s ease;
 }
 
 .color-picker-wrapper {
@@ -221,6 +250,7 @@ body {
     background:
         linear-gradient(to bottom, white, transparent 50%, black),
         linear-gradient(to right, grey, red);
+    transition: border-color 0.3s ease;
 }
 
 .color-gradient {
@@ -297,16 +327,19 @@ body {
 /* Unit Categories */
 .unit-category {
     padding: 15px;
-    background-color: #fff;
+    background-color: var(--input-bg-editable);
     border: 1px solid var(--border-color);
     border-radius: 4px;
     margin-top: 10px;
+    transition: background-color 0.3s ease;
 }
 
 .unit-category h3 {
     font-size: 15px;
     margin-bottom: 12px;
     font-weight: 600;
+    color: var(--text-color);
+    transition: color 0.3s ease;
 }
 
 /* Buttons */
@@ -314,7 +347,8 @@ body {
 .action-btn {
     padding: 10px 16px;
     border: 1px solid var(--border-color);
-    background-color: #fff;
+    background-color: var(--btn-bg);
+    color: var(--btn-text);
     border-radius: 4px;
     cursor: pointer;
     font-size: 14px;
@@ -322,26 +356,42 @@ body {
     font-weight: 500;
 }
 
-.copy-btn:hover,
-.action-btn:hover {
-    background-color: var(--btn-hover);
+/* 复制按钮 - 默认状态 */
+.copy-btn {
+    background-color: var(--btn-bg);
+    color: var(--btn-text);
+    border-color: var(--border-color);
+}
+
+/* 复制按钮 - 悬停状态 */
+.copy-btn:hover {
+    background-color: var(--btn-hover-bg);
     border-color: var(--primary-color);
 }
 
-.copy-btn:active,
-.action-btn:active {
-    background-color: #e0e0e0;
+/* 复制按钮 - 活跃状态 */
+.copy-btn:active {
+    background-color: var(--btn-active-bg);
 }
 
+/* 操作按钮 - 默认状态 */
 .action-btn {
-    background-color: var(--success-color);
-    color: #fff;
-    border-color: var(--success-color);
+    background-color: var(--btn-success-bg);
+    color: var(--btn-success-text);
+    border-color: var(--btn-success-bg);
 }
 
+/* 操作按钮 - 悬停状态 */
 .action-btn:hover {
-    background-color: #45a049;
-    border-color: #45a049;
+    background-color: var(--btn-success-hover);
+    border-color: var(--btn-success-hover);
+    opacity: 0.9;
+}
+
+/* 操作按钮 - 活跃状态 */
+.action-btn:active {
+    opacity: 0.8;
+    transform: scale(0.98);
 }
 
 /* Textarea */
@@ -420,16 +470,18 @@ body {
     flex-direction: column;
     align-items: center;
     padding: 12px;
-    background-color: #fff;
+    background-color: var(--input-bg-editable);
     border: 1px solid var(--border-color);
     border-radius: 4px;
+    transition: background-color 0.3s ease;
 }
 
 .stat-label {
     font-size: 12px;
-    color: #999;
+    color: var(--input-text);
     margin-bottom: 6px;
     font-weight: 500;
+    transition: color 0.3s ease;
 }
 
 .stat-value {
